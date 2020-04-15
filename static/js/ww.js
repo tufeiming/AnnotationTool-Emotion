@@ -355,20 +355,20 @@ $(document).ready(function () {
         var newtd1 = document.createElement("td");
         newtd1.innerHTML = title_entity;
         newtd1.contentEditable = true;
-        newtd1.onblur = function(){
+        newtd1.onblur = function () {
             var entity = $(this).html();
-            if(edit_entity in data[current_id]['name_entity']){
+            if (edit_entity in data[current_id]['name_entity']) {
                 var value = data[current_id]['name_entity'][edit_entity];
                 delete data[current_id]['name_entity'][edit_entity];
                 data[current_id]['name_entity'][entity] = value;
             }
-            if(edit_entity in data[current_id]['keyword_entity']){
+            if (edit_entity in data[current_id]['keyword_entity']) {
                 var value = data[current_id]['keyword_entity'][edit_entity];
                 delete data[current_id]['keyword_entity'][edit_entity];
                 data[current_id]['keyword_entity'][entity] = value;
             }
         }
-        newtd1.onclick = function(){
+        newtd1.onclick = function () {
             edit_entity = $(this).html();
         }
 
@@ -412,10 +412,10 @@ $(document).ready(function () {
                 var value = this.value;
                 var title_entity = this.parentNode.parentNode.previousSibling.previousSibling.innerHTML;
                 var entity_category = this.parentNode.parentNode.previousSibling.innerHTML;
-                if(entity_category == "公司人名实体"){
+                if (entity_category == "公司人名实体") {
                     entity_category = "name_entity";
                 }
-                if(entity_category == '关键词实体'){
+                if (entity_category == '关键词实体') {
                     entity_category = "keyword_entity";
                 }
 //                alert("(" + title_entity + ")(" + entity_category + ")");
@@ -470,7 +470,7 @@ $(document).ready(function () {
     $(document).keydown(function (event) {
 //        console.log(event.keyCode);
         // a -> pre
-        if(event.keyCode == 37){
+        if (event.keyCode == 37) {
             if (current_id == 0) {
                 alert("已经到头了！");
             } else {
@@ -479,7 +479,7 @@ $(document).ready(function () {
             }
         }
         // d -> next
-        if(event.keyCode == 39){
+        if (event.keyCode == 39) {
             if (current_id == data.length - 1) {
                 alert("已经到底了！");
             } else {
