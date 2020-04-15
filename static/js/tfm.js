@@ -1,10 +1,54 @@
-var data;
-var current_id = 0;
-var edit_entity;
+let data;
+let current_id = 0;
+
+// 显示情绪提示
+function displayEmotionPrompt(id) {
+    console.log("当前id：" + id);
+    $("#emotion_prompt").show();
+    switch (id) {
+        case "anger_label":
+            $("#emotion_prompt_content").text("生气的常见划分有：愤怒、愤恨、不平。判断生气时，可以先找情绪词，例如令人气愤，生气等。");
+            break;
+        case "sadness_label":
+            $("#emotion_prompt_content").text("悲伤的常见划分有：忧伤、悲痛、自怜、失望、惋惜、沮丧、寂寞、无奈、愧疚、懊悔、思念。");
+            break;
+        case "disgust_label":
+            $("#emotion_prompt_content").text("厌恶的常见划分有：轻蔑、讥讽、抗拒、烦躁、反感、嫉妒、怀疑。厌恶要有对应的对象，当厌恶变得强烈，逼近个人利益时，人就会产生想要消灭以保护自己利益的欲望，情绪就转化为了愤怒。");
+            break;
+        case "happiness_label":
+            $("#emotion_prompt_content").text("高兴的常见划分有：高兴、开心、满足、幸福、骄傲、快乐、兴奋、狂喜。判断高兴时，可以先找情绪词，如开心，愉快，拟声词、表情标签等。");
+            break;
+        case "fear_label":
+            $("#emotion_prompt_content").text("害怕的常见划分有：焦虑、惊恐、紧张、担忧、疑虑、恐慌、羞耻、害羞。害怕有对应的主体或对象。");
+            break;
+        case "surprise_label":
+            $("#emotion_prompt_content").text("惊讶的常见划分有：疑惑、震惊、讶异、惊喜、尴尬。惊讶表示的情感倾向也有正面和负面，需要结合全文本考虑。");
+            break;
+        case "love_label":
+            $("#emotion_prompt_content").text("喜爱的常见划分有：喜爱、赞美、鼓励、友善、信赖、亲密、挚爱。同时，喜爱要有对应的对象，当喜爱变得强烈，涉及个人利益时，情绪就转变成高兴。");
+            break;
+        default:
+            break;
+    }
+
+}
+
+// 隐藏情绪提示
+function hideEmotionPrompt() {
+    console.log("鼠标离开");
+    $("#emotion_prompt").hide();
+}
 
 $(document).ready(function () {
     $("#file_view").show();
     $("#label_view").hide();
+
+    // 鼠标悬停显示情绪提示
+    $("label[name='emotion_label']").hover(function () {
+        displayEmotionPrompt($(this).attr("id"));
+    }, function () {
+        hideEmotionPrompt();
+    });
 
     // 上一页响应函数
     $("#pre_button").click(function () {
@@ -285,7 +329,7 @@ $(document).ready(function () {
     // 页面加载数据
     function render_data(current_id) {
         $("#title_div").text(data[current_id]["title"]);
-        $("#content_div").html(data[current_id]["content"].substring(0, 127));
+        $("#content_div").html(data[current_id]["content"].substring(0, 511));
         $("#current_id_show").html(current_id);
         $("#last_id_show").html(data.length - 1);
         $('#div_id_edit').hide();
@@ -363,23 +407,23 @@ $(document).ready(function () {
                 //           console.log(rank_id)
                 //           console.log(typeof rank_id)
                 if (rank_id == "生气") {
-                    $("#angry").parent().attr("class", "btn btn-default active");
-                    $("#angry").prev().attr("class", "glyphicon glyphicon-check");
+                    $("#anger").parent().attr("class", "btn btn-default active");
+                    $("#anger").prev().attr("class", "glyphicon glyphicon-check");
                 } else if (rank_id == "悲伤") {
-                    $("#sad").parent().attr("class", "btn btn-default active");
-                    $("#sad").prev().attr("class", "glyphicon glyphicon-check");
+                    $("#sadness").parent().attr("class", "btn btn-default active");
+                    $("#sadness").prev().attr("class", "glyphicon glyphicon-check");
                 } else if (rank_id == "厌恶") {
-                    $("#hate").parent().attr("class", "btn btn-default active");
-                    $("#hate").prev().attr("class", "glyphicon glyphicon-check");
+                    $("#disgust").parent().attr("class", "btn btn-default active");
+                    $("#disgust").prev().attr("class", "glyphicon glyphicon-check");
                 } else if (rank_id == "高兴") {
-                    $("#happy").parent().attr("class", "btn btn-default active");
-                    $("#happy").prev().attr("class", "glyphicon glyphicon-check");
+                    $("#happiness").parent().attr("class", "btn btn-default active");
+                    $("#happiness").prev().attr("class", "glyphicon glyphicon-check");
                 } else if (rank_id == "害怕") {
-                    $("#afraid").parent().attr("class", "btn btn-default active");
-                    $("#afraid").prev().attr("class", "glyphicon glyphicon-check");
+                    $("#fear").parent().attr("class", "btn btn-default active");
+                    $("#fear").prev().attr("class", "glyphicon glyphicon-check");
                 } else if (rank_id == "惊讶") {
-                    $("#amazing").parent().attr("class", "btn btn-default active");
-                    $("#amazing").prev().attr("class", "glyphicon glyphicon-check");
+                    $("#surprise").parent().attr("class", "btn btn-default active");
+                    $("#surprise").prev().attr("class", "glyphicon glyphicon-check");
                 } else if (rank_id == "喜爱") {
                     $("#love").parent().attr("class", "btn btn-default active");
                     $("#love").prev().attr("class", "glyphicon glyphicon-check");
