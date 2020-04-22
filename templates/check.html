@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    交叉检验工具
+{% endblock %}
+{% block jsblock %}
+    <script src="{% static 'js/check.js' %}"></script>
+{% endblock %}
+{% block file_input %}
+    <div id="file_view" style="text-align:center;margin-top: 20px">
+        <h3>选择文件<span class="text-warning">（请务必选择同一份预料的两个标注结果）</span></h3>
+        <input type="file" id="file_input" multiple/>
+    </div>
+{% endblock %}
+{% block jump %}
+    <div class="row clearfix text-center" style="margin-bottom: 20px;font-size: 25px;">
+        <div id="div_id_show">
+            <span id="current_id_show" class="text-info"></span>
+            <span class="text-primary">/</span>
+            <span id="last_id_show" class="text-info"></span>(
+            <span id="actual_id_show" class="text-info"></span>)
+        </div>
+    </div>
+{% endblock %}
+{% block left_bottom %}
+
+    <div>
+        <h4 id="file1_name"></h4>
+        <div>是否有效数据：<span id="file1_isValid" class="text-info"></span></div>
+        <div>情感极性：<span id="file1_emotion3" class="text-info"></span></div>
+        <div>情绪类别：<span id="file1_emotion7" class="text-info"></span></div>
+    </div>
+    <div>
+        <h4 id="file2_name"></h4>
+        <div>是否有效数据：<span id="file2_isValid" class="text-info"></span></div>
+        <div>情感极性：<span id="file2_emotion3" class="text-info"></span></div>
+        <div>情绪类别：<span id="file2_emotion7" class="text-info"></span></div>
+    </div>
+    <hr>
+    <div class=" text-center">
+        <div class="btn-group" data-toggle="buttons" id="agree">
+            <label class="btn btn-default">
+                <span class="glyphicon glyphicon-unchecked"></span>
+                <input type="radio" name="agree" id="agree1" value="0"/> 赞成第一个
+            </label>
+            <label class="btn btn-default">
+                <span class="glyphicon glyphicon-unchecked"></span>
+                <input type="radio" name="agree" id="agrre2" value="1"/> 赞成第二个
+            </label>
+        </div>
+    </div>
+{% endblock %}

@@ -1,181 +1,36 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <title>情绪标注工具</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
-    <script src="../static/js/jquery-3.3.1.min.js"></script>
-    <script src="../static/js/bootstrap.min.js"></script>
-    <script src="../static/js/wangcong.js"></script>
-</head>
-<body>
-<div class="container">
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    情绪标注工具
+{% endblock %}
+{% block jsblock %}
+    <script src="{% static 'js/label.js' %}"></script>
+{% endblock %}
+{% block file_input %}
     <div id="file_view" style="text-align:center;margin-top: 20px">
         <h3>选择文件</h3>
         <input type="file" id="file_input"/>
     </div>
-
-    <div id="label_view" style="display:none;margin-top:20px">
-        <div class="row clearfix text-center" style="margin-bottom: 20px;font-size: 25px;">
-            <div id="div_id_show">
-                <span id="current_id_show" class="text-info"></span>
-                <span class="text-primary">/</span>
-                <span id="last_id_show" class="text-info"></span>
-            </div>
-            <div id="div_id_edit" style="display:none">
-                <input type="number" id="target_id_edit" style="width: 70px;height:30px"/>
-                <span class="text-info">/</span>
-                <span id="last_id_edit"></span>
-                <button id="switch_button" class="btn btn-info btn-sm">跳转</button>
-                <button id="cancel_button" class="btn btn-info btn-sm">取消</button>
-            </div>
+{% endblock %}
+{% block jump %}
+    <div class="row clearfix text-center" style="margin-bottom: 20px;font-size: 25px;">
+        <div id="div_id_show">
+            <span id="current_id_show" class="text-info"></span>
+            <span class="text-primary">/</span>
+            <span id="last_id_show" class="text-info"></span>
         </div>
-        <div class="row clearfix">
-            <div class="col-md-6 column">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" id="title_div"></h3>
-                    </div>
-                    <div id="content_div" style="height:600px;border:none;overflow-y: auto"></div>
-                </div>
-            </div>
-
-            <div class="col-md-6 column">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            标注面板 <span class="glyphicon glyphicon-question-sign" id="question" data-toggle="modal"
-                                       data-target="#myModal"></span>
-                        </h3>
-                    </div>
-                    <!--</div>-->
-                </div>
-                <div class="container body-content">
-                    <div class="row" style="margin-bottom:20px;width:400px;margin-left:80px;">
-                        <div class="text-center col-xs-12">
-                            <h3>情感极性</h3>
-                            <div class="well well-sm">
-                                <div class="btn-group" data-toggle="buttons" id="Select1">
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="radio" name="category" id="positive"
-                                               checked="" value="positive"/> 正面
-                                    </label>
-
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="radio" name="category" id="negative"
-                                               value="negative"/> 负面
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="radio" name="category" id="neutral"
-                                               value="neutral"/> 中性
-                                    </label>
-                                    <!--<label class="btn btn-default" id="refresh">-->
-                                        <!--&lt;!&ndash;<input type="radio" name="刷新1" id="refresh1"&ndash;&gt;-->
-                                        <!--&lt;!&ndash;value=""/>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;</label>&ndash;&gt;-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container body-content">
-                    <div class="row" style="margin-bottom:20px;width:600px">
-                        <div class="text-center col-xs-12">
-                            <h3>情绪类别</h3>
-                            <div class="well well-sm">
-                                <div class="btn-group" data-toggle="buttons" id="Select2" >
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="angry"  value="1"/>
-                                        生气
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="sad"  value="2"/>
-                                        悲伤
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="hate"  value="3"/>
-                                        厌恶
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="happy" value="4"/>
-                                        高兴
-                                    </label>
-                                     <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="afraid" value="4"/>
-                                        害怕
-                                    </label>
-                                     <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="amazing" value="4"/>
-                                        惊讶
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="love" value="4"/>
-                                        喜爱
-                                    </label>
-                                     <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="none" value="4"/>
-                                        其他
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <button class="btn btn-info" id="pre_button">上一个</button>
-                    <button class="btn btn-info" id="save_button">导出标注结果</button>
-                    <button class="btn btn-info" id="next_button">下一个</button>
-                </div>
-            </div>
+        <div id="div_id_edit" style="display:none">
+            <input type="number" id="target_id_edit" style="width: 70px;height:30px"/>
+            <span class="text-info">/</span>
+            <span id="last_id_edit"></span>
+            <button id="switch_button" class="btn btn-info btn-sm">跳转</button>
+            <button id="cancel_button" class="btn btn-info btn-sm">取消</button>
         </div>
     </div>
-
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">标注规范和操作说明</h4>
-                </div>
-                <div class="modal-body">
-                    <!--<p><strong>快捷键：</strong>-->
-                        <!--<mark>方向键上、下: 上一个/下一个&nbsp;</mark>-->
-                    <!--</p>-->
-                    <!--<p><strong>跳转：</strong>-->
-                        <!--<mark>点击当前新闻序号id</mark>-->
-                    <!--</p>-->
-                    <p>标注规范网址：http://www.kaili.gov.cn/zwgk/xxgkml/jcgk/yjgl/yjya/201806/t20180612_3159681.html</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">退出</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
+{% endblock %}
+{% block left_bottom %}
+    <div id="emotion_prompt" style="display: none">
+        <h3 class="text-center">提示</h3>
+        <div id="emotion_prompt_content"></div>
     </div>
-</div>
-</body>
-<style>
-    .btn{
-        background-color: #d9edf7;
-        color:#31708f;
-        border-color: #bce8f1;
-    }
-
-
-
-
-
-
-</style>
-</html>
+{% endblock %}
