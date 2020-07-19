@@ -7,5 +7,5 @@ def index(request):
     return render(request, 'label.html')
 
 
-def check(request):
-    return render(request, 'check.html')
+# def check(request):
+#     return render(request, 'check.html')

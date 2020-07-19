@@ -33,6 +33,23 @@ function displayEmotionPrompt(id) {
 
 }
 
+// 显示图片
+function displayPictures() {
+    let picture_list = data[current_id]['微博图片'];
+
+    for (const picture_url of picture_list) {
+        console.log("图片url：" + picture_url);
+        $("#picture_div").append('<img src="' + picture_url + ' "/>');
+    }
+
+}
+
+// 清空图片
+function clearImg() {
+    console.log("清除图片");
+    $("#picture_div").empty();
+}
+
 // 隐藏情绪提示
 function hideEmotionPrompt() {
     console.log("鼠标离开");
@@ -43,30 +60,33 @@ $(document).ready(function () {
     $("#file_view").show();
     $("#label_view").hide();
 
-    // 鼠标悬停显示情绪提示
-    $("label[name='emotion_label']").hover(function () {
-        displayEmotionPrompt($(this).attr("id"));
-    }, function () {
-        hideEmotionPrompt();
-    });
 
-    // 上一页响应函数
+    // 鼠标悬停显示情绪提示
+    // $("label[name='emotion_label']").hover(function () {
+    //     displayEmotionPrompt($(this).attr("id"));
+    // }, function () {
+    //     hideEmotionPrompt();
+    // });
+
+    // 上一个响应函数
     $("#pre_button").click(function () {
         if (current_id == 0) {
             alert("已经到头了！");
         } else {
             current_id -= 1;
+            clearImg();
             render_data(current_id);
         }
     });
 
-    // 下一页响应函数
+    // 下一个响应函数
     $("#next_button").click(function () {
         if (current_id == data.length - 1) {
             alert("已经到底了！");
         } else {
             //跳转到下一页
             current_id += 1;
+            clearImg();
             render_data(current_id);
         }
     });
@@ -329,12 +349,14 @@ $(document).ready(function () {
 
     // 页面加载数据
     function render_data(current_id) {
-        $("#title_div").text(data[current_id]["title"]);
-        $("#content_div").html(data[current_id]["content"].substring(0, 511));
+        $("#title_div").text("微博内容");
+        // $("#content_div").html(data[current_id]["微博中文内容"].substring(0, 511));
+        $("#content_div").html(data[current_id]["微博中文内容"]);
         $("#current_id_show").html(current_id);
         $("#last_id_show").html(data.length - 1);
         $('#div_id_edit').hide();
         $('#div_id_show').show();
+        displayPictures();
 //        $('#refresh').hide();
 
 
