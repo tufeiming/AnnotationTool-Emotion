@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
     <script src="../static/js/jquery-3.3.1.min.js"></script>
     <script src="../static/js/bootstrap.min.js"></script>
-    <script src="../static/js/tfm.js"></script>
+    <script src="../static/js/lable.js"></script>
 </head>
 <body>
 <div class="container">
@@ -106,53 +106,19 @@
                 </div>
                 <div class="container body-content">
                     <div class="row" style="margin-bottom:20px;width:600px">
-                        <div class="text-center col-xs-12">
-                            <h3>情绪类别</h3>
-                            <div class="well well-sm">
-                                <div class="btn-group" data-toggle="buttons" id="Select3">
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="angry" value="1"/>
-                                        生气
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="sad" value="2"/>
-                                        悲伤
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="hate" value="3"/>
-                                        厌恶
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="happy" value="4"/>
-                                        高兴
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="afraid" value="4"/>
-                                        害怕
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="amazing" value="4"/>
-                                        惊讶
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="love" value="4"/>
-                                        喜爱
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <span class="glyphicon glyphicon-unchecked"></span>
-                                        <input type="checkbox" name="emotion" id="none" value="4"/>
-                                        其他
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                        <button class="btn" id="add_row_button">添加</button>
+                        <table class="table table-striped table-bordered" id="emotion_table">
+                            <tr>
+                                <th style="vertical-align: middle !important;text-align: center;" nowrap="nowrap">
+                                    情绪
+                                </th>
+                                <th style="vertical-align: middle !important;text-align: center;">线索</th>
+                                <th style="vertical-align: middle !important;text-align: center;">原因</th>
+                                <th style="vertical-align: middle !important;text-align: center;" nowrap="nowrap">
+                                    操作
+                                </th>
+                            </tr>
+                        </table>
                     </div>
                 </div>
 
