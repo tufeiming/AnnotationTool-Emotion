@@ -4,26 +4,29 @@ let current_id = 0;
 
 // table添加行 html语句
 function getNewRow() {
-    return "<tr>\n" +
+    let newRow = "<tr>\n" +
         "                                <td style=\"vertical-align: middle !important;text-align: center;\">\n" +
         "                                    <select class=\"custom-select my-1 mr-sm-2\" id=\"emotion_select\">\n" +
         "                                        <option value=\"生气\" selected=\"selected\">生气</option>\n" +
         "                                        <option value=\"悲伤\">悲伤</option>\n" +
         "                                        <option value=\"厌恶\">厌恶</option>\n" +
-        "                                        <option value=\"高兴\">高兴</option>\n" +
+        "                                        <option value=\"快乐\">快乐</option>\n" +
         "                                        <option value=\"害怕\">害怕</option>\n" +
         "                                        <option value=\"惊讶\">惊讶</option>\n" +
         "                                        <option value=\"喜爱\">喜爱</option>\n" +
         "                                    </select>\n" +
         "                                </td>\n" +
-        "                                <td style=\"vertical-align: middle !important;text-align: center;\" id=\"clue\"\n" +
+        "                                <td style=\"vertical-align: middle !important;text-align: center;\" id=\"subject\"\n" +
         "                                    contentEditable=\"true\"></td>\n" +
-        "                                <td style=\"vertical-align: middle !important;text-align: center;\" id=\"cause\"\n" +
+        "                                <td style=\"vertical-align: middle !important;text-align: center;\" id=\"object\"\n" +
+        "                                    contentEditable=\"true\"></td>\n" +
+        "                                <td style=\"vertical-align: middle !important;text-align: center;\" id=\"clue\"\n" +
         "                                    contentEditable=\"true\"></td>\n" +
         "                                <td style=\"vertical-align: middle !important;text-align: center;\" nowrap=\"nowrap\">\n" +
         "                                    <button class=\"delete\" id=\"delete_row_button\">删除</button>\n" +
         "                                </td>\n" +
         "                            </tr>";
+    return newRow;
 }
 
 // 保存情绪list
@@ -31,8 +34,9 @@ function saveEmotion() {
     console.log("执行saveEmotion()函数--------------------");
     console.log("current_id=" + current_id);
     let emotion;
-    let clue;
-    let cause;
+    let subject;
+    let object;
+    let clue
 
     //先将emotion_list清空
     data[current_id]["emotion_list"] = [];
@@ -42,9 +46,10 @@ function saveEmotion() {
     console.log("table共有" + (trs.length - 1) + "行数据");
     for (let i = 1; i < trs.length; i++) {
         emotion = trs.eq(i).find("td").eq(0).find("#emotion_select").val();
-        clue = trs.eq(i).find("td").eq(1).text();
-        cause = trs.eq(i).find("td").eq(2).text();
-        let addContent = '{"emotion": "' + emotion + '","clue": "' + clue + '","cause": "' + cause + '"}';
+        subject = trs.eq(i).find("td").eq(1).text();
+        object = trs.eq(i).find("td").eq(2).text();
+        clue = trs.eq(i).find("td").eq(3).text();
+        let addContent = '{"emotion": "' + emotion + '","subject": "' + subject + '","object": "' + object + '","clue": "' + clue + '"}';
         console.log(addContent);
         data[current_id]["emotion_list"].push(eval("(" + addContent + ")"));
     }
@@ -59,7 +64,7 @@ $(document).ready(function () {
         // 先保存情绪
         saveEmotion();
 
-        if (current_id === 0) {
+        if (current_id == 0) {
             alert("已经到头了！");
         } else {
             current_id -= 1;
@@ -72,7 +77,7 @@ $(document).ready(function () {
         // 先保存情绪
         saveEmotion();
 
-        if (current_id === data.length - 1) {
+        if (current_id == data.length - 1) {
             alert("已经到底了！");
         } else {
             //跳转到下一页
@@ -87,13 +92,14 @@ $(document).ready(function () {
 
         if (files.length === 0) {
             alert('请选择文件');
+            return;
         } else {
             let reader = new FileReader(); //新建一个FileReader
             reader.readAsText(files[0], "UTF-8"); //读取文件
             reader.onload = function (evt) { //读取完文件之后会回来这里
                 let fileString = evt.target.result;
                 try {
-                    data = JSON.parse(fileString.toString());
+                    data = JSON.parse(fileString);
                     console.log("导入数据成功，共有" + data.length + "条数据!");
                     $("#file_view").hide();
                     $("#label_view").show();
@@ -375,8 +381,8 @@ $(document).ready(function () {
         $("input[type='radio']").parent().attr("class", "btn btn-default");
         $("input[type='radio']").prev().attr("class", "glyphicon glyphicon-uncheck");
 
-        // $("input[type='checkbox']").parent().attr("class", "btn btn-default");
-        // $("input[type='checkbox']").prev().attr("class", "glyphicon glyphicon-uncheck");
+         $("input[type='checkbox']").parent().attr("class", "btn btn-default");
+         $("input[type='checkbox']").prev().attr("class", "glyphicon glyphicon-uncheck");
 
 
         if (data[current_id]["isValid"] != "") {
@@ -392,22 +398,54 @@ $(document).ready(function () {
             }
         }
 
-        if (data[current_id]["emotion3"] != "") {
-            let category_id = data[current_id]['emotion3'];
-//           console.log(category_id)
-//           console.log(typeof category_id)
-            if (category_id === "正面") {
-                $("#positive").parent().attr("class", "btn btn-default active");
-                $("#positive").prev().attr("class", "glyphicon glyphicon-check");
-            } else if (category_id === "负面") {
-                $("#negative").parent().attr("class", "btn btn-default active");
-                $("#negative").prev().attr("class", "glyphicon glyphicon-check");
-            } else if (category_id === "中性") {
-                $("#neutral").parent().attr("class", "btn btn-default active");
-                $("#neutral").prev().attr("class", "glyphicon glyphicon-check");
+//         if (data[current_id]["emotion3"] != "") {
+//             let category_id = data[current_id]['emotion3'];
+// //           console.log(category_id)
+// //           console.log(typeof category_id)
+//             if (category_id === "正面") {
+//                 $("#positive").parent().attr("class", "btn btn-default active");
+//                 $("#positive").prev().attr("class", "glyphicon glyphicon-check");
+//             } else if (category_id === "负面") {
+//                 $("#negative").parent().attr("class", "btn btn-default active");
+//                 $("#negative").prev().attr("class", "glyphicon glyphicon-check");
+//             } else if (category_id === "中性") {
+//                 $("#neutral").parent().attr("class", "btn btn-default active");
+//                 $("#neutral").prev().attr("class", "glyphicon glyphicon-check");
+//             }
+//         }
+        for (let i = 0; i < data[current_id]["emotion7"].length; i++) {
+            if (data[current_id]["emotion7"][i] != "") {
+                let rank_id = data[current_id]['emotion7'][i]
+                //           console.log(rank_id)
+                //           console.log(typeof rank_id)
+                if (rank_id == "生气") {
+                    $("#anger").parent().attr("class", "btn btn-default active");
+                    $("#anger").prev().attr("class", "glyphicon glyphicon-check");
+                } else if (rank_id == "悲伤") {
+                    $("#sadness").parent().attr("class", "btn btn-default active");
+                    $("#sadness").prev().attr("class", "glyphicon glyphicon-check");
+                } else if (rank_id == "厌恶") {
+                    $("#disgust").parent().attr("class", "btn btn-default active");
+                    $("#disgust").prev().attr("class", "glyphicon glyphicon-check");
+                } else if (rank_id == "高兴") {
+                    $("#happiness").parent().attr("class", "btn btn-default active");
+                    $("#happiness").prev().attr("class", "glyphicon glyphicon-check");
+                } else if (rank_id == "害怕") {
+                    $("#fear").parent().attr("class", "btn btn-default active");
+                    $("#fear").prev().attr("class", "glyphicon glyphicon-check");
+                } else if (rank_id == "惊讶") {
+                    $("#surprise").parent().attr("class", "btn btn-default active");
+                    $("#surprise").prev().attr("class", "glyphicon glyphicon-check");
+                } else if (rank_id == "喜爱") {
+                    $("#love").parent().attr("class", "btn btn-default active");
+                    $("#love").prev().attr("class", "glyphicon glyphicon-check");
+                } else if (rank_id == "其他") {
+                    $("#none").parent().attr("class", "btn btn-default active");
+                    $("#none").prev().attr("class", "glyphicon glyphicon-check");
+                }
+
             }
         }
-
         // 先清空
         $("#emotion_table tr:gt(0)").remove();
         // 从data中读取
@@ -415,44 +453,46 @@ $(document).ready(function () {
         console.log("emotion_list.length=" + emotionList.length);
         for (let i = 0; i < emotionList.length; i++) {
             let emotion = emotionList[i]["emotion"];
+            let subject = emotionList[i]["subject"];
+            let object = emotionList[i]["object"];
             let clue = emotionList[i]["clue"];
-            let cause = emotionList[i]["cause"];
             $("#emotion_table").append(getNewRow());
             let trs = $("#emotion_table").find("tr");
             trs.eq(i + 1).find("td").eq(0).find("#emotion_select").val(emotion);
-            trs.eq(i + 1).find("td").eq(1).text(clue);
-            trs.eq(i + 1).find("td").eq(2).text(cause);
+            trs.eq(i + 1).find("td").eq(1).text(subject);
+            trs.eq(i + 1).find("td").eq(2).text(object);
+            trs.eq(i + 1).find("td").eq(3).text(clue);
         }
     }
 });
-// "use strict";
-// $(document).ready(function () {
-//     $("#Select1 .btn").on('click', function () {
-//         ToggleRadioButtons1("#Select1", $(this));
-//     });
-//
-//     $("#Select2 .btn").on('click', function () {
-//         ToggleRadioButtons2("#Select2", $(this));
-//     });
-//
-// });
-// let timer = null;
-// $(document).ready(function () {
-//     $("#Select3 .btn").on('click', function () {
-//         let now_id = this;
-//         clearTimeout(timer);
-//         timer = setTimeout(function () {
-//             ToggleRadioButtons3("#Select3", $(now_id));
-//         }, 200);
-//     });
-// });
-//
-// $(document).ready(function () {
-//     $("#Select3 .btn").dblclick(function () {
-//         clearTimeout(timer);
-//         ToggleRadioButtons4("#Select3", $(this));
-//     });
-// });
+"use strict";
+$(document).ready(function () {
+    $("#Select1 .btn").on('click', function () {
+        ToggleRadioButtons1("#Select1", $(this));
+    });
+
+    $("#Select2 .btn").on('click', function () {
+        ToggleRadioButtons2("#Select2", $(this));
+    });
+
+});
+let timer = null;
+$(document).ready(function () {
+    $("#Select3 .btn").on('click', function () {
+        let now_id = this;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            ToggleRadioButtons3("#Select3", $(now_id));
+        }, 200);
+    });
+});
+
+$(document).ready(function () {
+    $("#Select3 .btn").dblclick(function () {
+        clearTimeout(timer);
+        ToggleRadioButtons4("#Select3", $(this));
+    });
+});
 
 
 function ToggleRadioButtons1(groupName, current) {
@@ -496,47 +536,42 @@ function ToggleRadioButtons2(groupName, current) {
 
 }
 
-// function ToggleRadioButtons3(groupName, current) {
-//     console.log('情绪产生点击行为');
-//     console.log(current);
-//     let r = current.text().replace(/\ +/g, "");
-//     let s = r.replace(/[\r\n]/g, "");
-//     console.log(s);
-//     console.log(data[current_id]['emotion7'].indexOf(s));
-//     console.log(typeof data[current_id]['emotion7'].indexOf(s));
-//     if (data[current_id]['emotion7'].indexOf(s) > -1) {
-//         console.log("数据已存在")
-//     } else {
-//         data[current_id]['emotion7'].push(s);
-//         current.find(":first-child").removeClass("glyphicon-unchecked").addClass("glyphicon-check");
-//
-//     }
-//
-//     console.log("这里是保存后的数据", data[current_id]['emotion7'])
-//
-// }
-//
-// function ToggleRadioButtons4(groupName, current) {
-// //        Array.prototype.indexOf=function(arr){
-// //            for(let i=0;i<data[current_id]['emotion7'].length;i++){
-// //                if(data[current_id]['emotion7'][i]==arr){
-// //                    return i;
-// //                } 
-// //            }
-// //        }
-//     //在当前的btn-group里先清除所有“选取”图标，全部换成“取消”样式（“初始化”）
-//     console.log("这里双击了");
-//     console.log(current);
-//     let r = current.text().replace(/\ +/g, "");
-//     let s = r.replace(/[\r\n]/g, "");
-//     console.log(s);
-//     // 要删除的index
-//     let de_index = data[current_id]['emotion7'].indexOf(s);
-//     console.log("这里是位置", de_index);
-//     // 从emotion7中删除该情绪
-//     data[current_id]['emotion7'].splice(de_index, 1);
-//     current.find(":first-child").removeClass("glyphicon-check").addClass("glyphicon-unchecked");
-//     current.removeClass("btn btn-default active").addClass("btn btn-default");
-// }
+function ToggleRadioButtons3(groupName, current) {
+    console.log('情绪产生点击行为');
+    console.log(current);
+    let r = current.text().replace(/\ +/g, "");
+    let s = r.replace(/[\r\n]/g, "");
+    console.log(s);
+    console.log(data[current_id]['emotion7'].indexOf(s));
+    console.log(typeof data[current_id]['emotion7'].indexOf(s));
+    if (data[current_id]['emotion7'].indexOf(s) > -1) {
+        console.log("数据已存在")
+    } else {
+        data[current_id]['emotion7'].push(s);
+        current.find(":first-child").removeClass("glyphicon-unchecked").addClass("glyphicon-check");
+
+    }
+
+    console.log("这里是保存后的数据", data[current_id]['emotion7'])
+
+}
+
+function ToggleRadioButtons4(groupName, current) {
+//        Array.prototype.indexOf=function(arr){
+
+    //在当前的btn-group里先清除所有“选取”图标，全部换成“取消”样式（“初始化”）
+    console.log("这里双击了");
+    console.log(current);
+    let r = current.text().replace(/\ +/g, "");
+    let s = r.replace(/[\r\n]/g, "");
+    console.log(s);
+    // 要删除的index
+    let de_index = data[current_id]['emotion7'].indexOf(s);
+    console.log("这里是位置", de_index);
+    // 从emotion7中删除该情绪
+    data[current_id]['emotion7'].splice(de_index, 1);
+    current.find(":first-child").removeClass("glyphicon-check").addClass("glyphicon-unchecked");
+    current.removeClass("btn btn-default active").addClass("btn btn-default");
+}
 
 
