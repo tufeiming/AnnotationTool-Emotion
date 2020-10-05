@@ -4,7 +4,7 @@ let current_id = 0;
 
 // table添加行 html语句
 function getNewRow() {
-    let newRow = "<tr>\n" +
+    return "<tr>\n" +
         "                                <td style=\"vertical-align: middle !important;text-align: center;\">\n" +
         "                                    <select class=\"custom-select my-1 mr-sm-2\" id=\"emotion_select\">\n" +
         "                                        <option value=\"生气\" selected=\"selected\">生气</option>\n" +
@@ -26,7 +26,7 @@ function getNewRow() {
         "                                    <button class=\"delete\" id=\"delete_row_button\">删除</button>\n" +
         "                                </td>\n" +
         "                            </tr>";
-    return newRow;
+
 }
 
 // 保存情绪list
@@ -370,7 +370,7 @@ $(document).ready(function () {
         console.log("执行render_data()函数--------------------");
         console.log("current_id=" + current_id);
         $("#title_div").text(data[current_id]["title"]);
-        $("#content_div").html(data[current_id]["content"].substring(0, 511));
+        $("#content_div").html(data[current_id]["content"].substring(0, 512));
         $("#current_id_show").html(current_id);
         $("#last_id_show").html(data.length - 1);
         $('#div_id_edit').hide();
@@ -381,8 +381,8 @@ $(document).ready(function () {
         $("input[type='radio']").parent().attr("class", "btn btn-default");
         $("input[type='radio']").prev().attr("class", "glyphicon glyphicon-uncheck");
 
-         $("input[type='checkbox']").parent().attr("class", "btn btn-default");
-         $("input[type='checkbox']").prev().attr("class", "glyphicon glyphicon-uncheck");
+        $("input[type='checkbox']").parent().attr("class", "btn btn-default");
+        $("input[type='checkbox']").prev().attr("class", "glyphicon glyphicon-uncheck");
 
 
         if (data[current_id]["isValid"] != "") {
@@ -516,7 +516,7 @@ function ToggleRadioButtons1(groupName, current) {
 }
 
 function ToggleRadioButtons2(groupName, current) {
-//       console.log(current)
+    // console.log(current)
     console.log('情感产生点击行为');
     console.log(current);
     let c = current.text().replace(/\ +/g, "");
