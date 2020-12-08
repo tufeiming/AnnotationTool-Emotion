@@ -1,7 +1,7 @@
 ## 前台页面
 /templates/label.html
 ## 功能实现
-/static/js/lable.js
+/static/js/label.js
 
 
 

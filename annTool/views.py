@@ -3,5 +3,5 @@ from django.shortcuts import render
 
 # Create your views here.
 
-def lable(request):
+def label(request):
     return render(request, 'label.html')
