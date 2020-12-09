@@ -364,7 +364,7 @@ $(document).ready(function () {
         console.log("执行render_data()函数--------------------");
         console.log("current_id=" + current_id);
         $("#title_div").text(data[current_id]["title"]);
-        $("#content_div").html(data[current_id]["content"].substring(0, 511));
+        $("#content_div").html(data[current_id]["content"]);
         $("#current_id_show").html(current_id);
         $("#last_id_show").html(data.length - 1);
         $('#div_id_edit').hide();
